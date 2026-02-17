@@ -3,20 +3,24 @@
 #include <Arduino.h>
 
 
-Velo::Velo(int pin) {
+Velo::Velo(int pin, int l_pin) {
     Pin = pin;
     count++;
     ID = count;
+    led_pin = l_pin;
+    
 }
 
 
 int Velo::count = 0;
 
 bool Velo::Check() {
-    if(analogRead(Pin) < 2000) {
+    if(analogRead(Pin) < 3200) {
+        digitalWrite(led_pin, LOW);
         return true;
     }
     else {
+        digitalWrite(led_pin, HIGH);
         return false;
     }
 }
