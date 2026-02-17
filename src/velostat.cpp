@@ -4,13 +4,15 @@
 #include <ESP32Servo.h>
 
 
-Velo::Velo(int pin, int l_pin, Servo* s1, Servo* s2) {
+Velo::Velo(int pin, int l_pin, Servo* s1, Servo* s2,int t_a1,int t_a2) {
     Pin = pin;
     count++;
     ID = count;
     led_pin = l_pin;
     Servo1 = s1;
     Servo2 = s2;
+    Target_S1_angle = t_a1;
+    Target_S2_angle = t_a2;
 }
 
 
@@ -39,6 +41,6 @@ void Velo::debug() {
 }
 
 void Velo::move() {
-    Servo1->write(100);//na pałe
-    Servo1->write(100);
+    Servo1->write(Target_S1_angle);
+    Servo2->write(Target_S2_angle);
 }

@@ -13,3 +13,20 @@
 #define LedPin3 17
 #define LedPin4 16
 #define LedPin5 15
+
+#define V1_S1_TARGET_ANGLE 22
+#define V1_S2_TARGET_ANGLE 32
+
+#define V2_S1_TARGET_ANGLE 26
+#define V2_S2_TARGET_ANGLE 6
+
+#define V3_S1_TARGET_ANGLE 45
+#define V3_S2_TARGET_ANGLE 0
+
+#define V4_S1_TARGET_ANGLE 0
+#define V4_S2_TARGET_ANGLE 0
+
+#define V5_S1_TARGET_ANGLE 165
+#define V5_S2_TARGET_ANGLE 164
+
+#define TOTAL_GLASSES 5

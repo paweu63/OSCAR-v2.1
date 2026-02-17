@@ -7,11 +7,16 @@
 Servo servo1;
 Servo servo2;
 
-Velo v1(VeloPin1, LedPin1, &servo1, &servo2);
-Velo v2(VeloPin2, LedPin2, &servo1, &servo2);
-Velo v3(VeloPin3, LedPin3, &servo1, &servo2);
-Velo v4(VeloPin4, LedPin4, &servo1, &servo2);
-Velo v5(VeloPin5, LedPin5, &servo1, &servo2);
+Velo v1(VeloPin1, LedPin1, &servo1, &servo2,V1_S1_TARGET_ANGLE,V1_S2_TARGET_ANGLE);
+Velo v2(VeloPin2, LedPin2, &servo1, &servo2,V2_S1_TARGET_ANGLE,V2_S2_TARGET_ANGLE);
+Velo v3(VeloPin3, LedPin3, &servo1, &servo2,V3_S1_TARGET_ANGLE,V3_S2_TARGET_ANGLE);
+Velo v4(VeloPin4, LedPin4, &servo1, &servo2,V4_S1_TARGET_ANGLE,V4_S2_TARGET_ANGLE);
+Velo v5(VeloPin5, LedPin5, &servo1, &servo2,V5_S1_TARGET_ANGLE,V5_S2_TARGET_ANGLE);
+
+Velo* all_glasses[] = {
+  &v1,&v2,&v3,&v4,&v5
+};
+int current_glass_index;
 Pump p1(PumpPin);
 
 
@@ -19,6 +24,7 @@ enum Robot_state {
   IDLE,
   WAITING_FOR_BUTTON,
   MOVE,
+  POUR,
   WAIT_FOR_EMPTY,
 
 };
@@ -59,6 +65,7 @@ void loop() {
       servo1.write(0);
       servo2.write(0);
       p1.stop();
+      current_glass_index = 0;
       if(Any_Velo_Placed()) {state = WAITING_FOR_BUTTON;}
     break;
 
@@ -68,13 +75,34 @@ void loop() {
     break;
 
     case MOVE:
-     if(Move() == true) {state = WAIT_FOR_EMPTY;}
+      if (current_glass_index >= TOTAL_GLASSES) {
+        state = WAIT_FOR_EMPTY;
+      } 
+      else {
+        if (all_glasses[current_glass_index]->Check()) {
+          all_glasses[current_glass_index]->move(); 
+          delay(1000);
+          state = POUR;
+        } 
+        else {
+          current_glass_index++;
+        }
+      }
+    break;
+
+    case POUR:
+      p1.start(11);
+      delay(2000);
+      p1.stop();
+      current_glass_index++;
+      state = MOVE; 
     break;
     
     case WAIT_FOR_EMPTY:
       if(!Any_Velo_Placed()) {state = IDLE;}
     break;
   }
+  Serial.print(state);
 
 }
 
@@ -82,40 +110,7 @@ void loop() {
 bool Any_Velo_Placed() {
   return v1.Check() || v2.Check() || v3.Check() || v5.Check();
 }
-bool Move(){
-  if(v1.Check()){
-    servo1.write(22);
-    servo2.write(32);
-    delay(1000);
-    p1.start(11);
-    delay(1000);
-  }
-  if (v2.Check()){
-    servo1.write(26);
-    servo2.write(6);
-    delay(1000);
-    p1.start(11);
-    delay(1000);
-  }
-  if (v3.Check()){
-    servo1.write(45);
-    servo2.write(0);
-    delay(1000);
-    p1.start(11);
-    delay(1000);
-  }
 
- if(v5.Check()){
-   servo1.write(165);
-   servo2.write(164);
-   delay(2000);
-   p1.start(11);
-   delay(1000);
-  }
-  servo1.write(0);
-  servo2.write(0);
-  return true;
-}
 
  
  
