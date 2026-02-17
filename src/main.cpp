@@ -2,29 +2,16 @@
 #include <ESP32Servo.h>
 #include "Velostat.h"
 #include "pump.h"
-
-#define VeloPin1 35
-#define VeloPin2 39
-#define VeloPin3 34
-#define VeloPin5 36 
-#define ButtonMove 14
-#define ButtonPump 27
-#define PumpPin 25
-#define SERVO_PIN_1 12
-#define SERVO_PIN_2 13
-#define LedPin1 33
-#define LedPin2 26
-#define LedPin3 17
-#define LedPin4 16
-#define LedPin5 15
+#include "decalarations.h"
 
 Servo servo1;
 Servo servo2;
 
-Velo v1(VeloPin1, LedPin1);
-Velo v2(VeloPin2, LedPin2);
-Velo v3(VeloPin3, LedPin3);
-Velo v5(VeloPin5, LedPin5);
+Velo v1(VeloPin1, LedPin1, &servo1, &servo2);
+Velo v2(VeloPin2, LedPin2, &servo1, &servo2);
+Velo v3(VeloPin3, LedPin3, &servo1, &servo2);
+Velo v4(VeloPin4, LedPin4, &servo1, &servo2);
+Velo v5(VeloPin5, LedPin5, &servo1, &servo2);
 Pump p1(PumpPin);
 
 
@@ -88,16 +75,12 @@ void loop() {
       if(!Any_Velo_Placed()) {state = IDLE;}
     break;
   }
-  
+
 }
 
 
 bool Any_Velo_Placed() {
-  bool Velo_state[] = {v1.Check(),v2.Check(), v3.Check(), v5.Check()};
-  for(int i =0; i<4; i++) {
-    if(Velo_state[i] == true) return true;
-  }
-  return false;
+  return v1.Check() || v2.Check() || v3.Check() || v5.Check();
 }
 bool Move(){
   if(v1.Check()){
