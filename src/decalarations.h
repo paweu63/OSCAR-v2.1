@@ -1,7 +1,7 @@
 #define VeloPin1 35
 #define VeloPin2 39
 #define VeloPin3 34
-#define VeloPin4 100 //to be changed
+#define VeloPin4 33
 #define VeloPin5 36 
 #define ButtonMove 14
 #define ButtonPump 27

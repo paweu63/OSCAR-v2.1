@@ -78,15 +78,14 @@ void loop() {
       if (current_glass_index >= TOTAL_GLASSES) {
         state = WAIT_FOR_EMPTY;
       } 
-      else {
-        if (all_glasses[current_glass_index]->Check()) {
+      else if (all_glasses[current_glass_index]->Check())
+         {
           all_glasses[current_glass_index]->move(); 
-          delay(1000);
+          delay(3000);
           state = POUR;
         } 
-        else {
-          current_glass_index++;
-        }
+      else {
+        current_glass_index++;
       }
     break;
 
@@ -99,16 +98,30 @@ void loop() {
     break;
     
     case WAIT_FOR_EMPTY:
+      servo1.write(180);
+      servo2.write(180);
       if(!Any_Velo_Placed()) {state = IDLE;}
     break;
   }
-  Serial.print(state);
-
+  // Serial.println(state);
+  // servo1.write(0);
+  // delay(1000);
+  // servo2.write(0);
+  // delay(1000);
+  // servo1.write(180);
+  // delay(1000);
+  // servo2.write(180);
+  // delay(1000);
 }
 
 
 bool Any_Velo_Placed() {
-  return v1.Check() || v2.Check() || v3.Check() || v5.Check();
+  for (int i = 0; i < TOTAL_GLASSES; i++) {
+    if (all_glasses[i]->Check()) {
+      return true; 
+    }
+  }
+  return false; 
 }
 
 
