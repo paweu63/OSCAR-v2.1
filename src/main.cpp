@@ -3,9 +3,11 @@
 #include "Velostat.h"
 #include "pump.h"
 #include "decalarations.h"
+#include "Display.h"
 
 Servo servo1;
 Servo servo2;
+MyDisplay screen;
 
 Velo v1(VeloPin1, LedPin1, &servo1, &servo2,V1_S1_TARGET_ANGLE,V1_S2_TARGET_ANGLE);
 Velo v2(VeloPin2, LedPin2, &servo1, &servo2,V2_S1_TARGET_ANGLE,V2_S2_TARGET_ANGLE);
@@ -33,7 +35,7 @@ Robot_state state = IDLE;
 
 bool Move();
 bool Any_Velo_Placed();
-
+void goToState(Robot_state newState, String msg);
 
 void setup() {
   Serial.begin(115200);
@@ -66,23 +68,23 @@ void loop() {
       servo2.write(0);
       p1.stop();
       current_glass_index = 0;
-      if(Any_Velo_Placed()) {state = WAITING_FOR_BUTTON;}
+      if(Any_Velo_Placed()) {goToState(WAITING_FOR_BUTTON, "Czekam na\nprzycisk");}
     break;
 
     case WAITING_FOR_BUTTON:
-      if(digitalRead(ButtonMove) == LOW ) {state = MOVE;}
-      if(!Any_Velo_Placed()) {state = IDLE;}
+      if(digitalRead(ButtonMove) == LOW ) {goToState(MOVE, "Jade do\npozycji");}
+      if(!Any_Velo_Placed()) {goToState(IDLE, "Czekam na\nkieliszki");}
     break;
 
     case MOVE:
       if (current_glass_index >= TOTAL_GLASSES) {
-        state = WAIT_FOR_EMPTY;
+        goToState(WAIT_FOR_EMPTY, "Oproznij\nkieliszki");
       } 
       else if (all_glasses[current_glass_index]->Check())
          {
           all_glasses[current_glass_index]->move(); 
           delay(3000);
-          state = POUR;
+          goToState(POUR, "Nalewanie");
         } 
       else {
         current_glass_index++;
@@ -94,13 +96,13 @@ void loop() {
       delay(2000);
       p1.stop();
       current_glass_index++;
-      state = MOVE; 
+      goToState(MOVE, "Jade do\npozycji"); 
     break;
     
     case WAIT_FOR_EMPTY:
       servo1.write(180);
       servo2.write(180);
-      if(!Any_Velo_Placed()) {state = IDLE;}
+      if(!Any_Velo_Placed()) {goToState(IDLE, "Czekam na\nkieliszki");}
     break;
   }
   // Serial.println(state);
@@ -124,7 +126,10 @@ bool Any_Velo_Placed() {
   return false; 
 }
 
-
+void goToState(Robot_state newState, String msg) {
+    state = newState;
+    screen.showMessage(msg);
+}
  
  
   
