@@ -19,7 +19,7 @@ Velo::Velo(int pin, int l_pin, Servo* s1, Servo* s2,int t_a1,int t_a2) {
 int Velo::count = 0;
 
 bool Velo::Check() {
-    if(analogRead(Pin) < 3200) {
+    if(analogRead(Pin) < 3300) {
         digitalWrite(led_pin, LOW);
         return true;
     }

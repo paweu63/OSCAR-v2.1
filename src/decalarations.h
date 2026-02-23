@@ -1,7 +1,7 @@
 #define VeloPin1 35
 #define VeloPin2 39
 #define VeloPin3 34
-#define VeloPin4 33
+#define VeloPin4 35
 #define VeloPin5 36 
 #define ButtonMove 14
 #define ButtonPump 27
@@ -23,7 +23,7 @@
 #define V3_S1_TARGET_ANGLE 45
 #define V3_S2_TARGET_ANGLE 0
 
-#define V4_S1_TARGET_ANGLE 0
+#define V4_S1_TARGET_ANGLE 60
 #define V4_S2_TARGET_ANGLE 0
 
 #define V5_S1_TARGET_ANGLE 165

@@ -37,9 +37,10 @@ bool Any_Velo_Placed();
 
 void setup() {
   Serial.begin(115200);
-
+  pinMode(VeloPin1, INPUT);
   pinMode(VeloPin2, INPUT);
   pinMode(VeloPin3, INPUT);
+  pinMode(VeloPin4, INPUT);
   pinMode(VeloPin5, INPUT);
   pinMode(PumpPin, OUTPUT);
   pinMode(LedPin1, OUTPUT);
@@ -58,7 +59,6 @@ void setup() {
 }
 
 void loop() {
-
   switch (state)
   {
     case IDLE:
@@ -103,15 +103,6 @@ void loop() {
       if(!Any_Velo_Placed()) {state = IDLE;}
     break;
   }
-  // Serial.println(state);
-  // servo1.write(0);
-  // delay(1000);
-  // servo2.write(0);
-  // delay(1000);
-  // servo1.write(180);
-  // delay(1000);
-  // servo2.write(180);
-  // delay(1000);
 }
 
 
@@ -121,7 +112,7 @@ bool Any_Velo_Placed() {
       return true; 
     }
   }
-  return false; 
+  return false;
 }
 
 
