@@ -31,7 +31,6 @@ enum Robot_state {
 
 Robot_state state = IDLE;
 
-bool Move();
 bool Any_Velo_Placed();
 
 
@@ -91,8 +90,6 @@ void loop() {
 
     case POUR:
       p1.start(11);
-      delay(2000);
-      p1.stop();
       current_glass_index++;
       state = MOVE; 
     break;
