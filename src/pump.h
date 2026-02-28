@@ -6,5 +6,6 @@ class Pump {
     Pump(int pin);
     void start(int);
     void stop();
+    void venting();
     
 };

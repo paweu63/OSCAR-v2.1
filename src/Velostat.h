@@ -10,9 +10,10 @@ class Velo {
     Servo *Servo2;
     int Target_S1_angle;
     int Target_S2_angle;
+    int threshold;
     
     public:
-    Velo(int, int, Servo*, Servo*, int, int);
+    Velo(int, int, Servo*, Servo*, int, int,int);
     bool Check();   
     void debug();
     void move();
