@@ -4,7 +4,7 @@
 #include <ESP32Servo.h>
 
 
-Velo::Velo(int pin, int l_pin, Servo* s1, Servo* s2,int t_a1,int t_a2) {
+Velo::Velo(int pin, int l_pin, Servo* s1, Servo* s2,int t_a1,int t_a2, int tr) {
     Pin = pin;
     count++;
     ID = count;
@@ -13,13 +13,14 @@ Velo::Velo(int pin, int l_pin, Servo* s1, Servo* s2,int t_a1,int t_a2) {
     Servo2 = s2;
     Target_S1_angle = t_a1;
     Target_S2_angle = t_a2;
+    threshold = tr;
 }
 
 
 int Velo::count = 0;
 
 bool Velo::Check() {
-    if(analogRead(Pin) < 3300) {
+    if(analogRead(Pin) < threshold) {
         digitalWrite(led_pin, LOW);
         return true;
     }
